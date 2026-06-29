@@ -1,0 +1,110 @@
+.show-excel-headers table {
+  counter-reset: table-row;
+  position: relative;
+  margin-top: 32px !important;
+  margin-left: 36px !important;
+  overflow: visible !important;
+}
+
+.show-excel-headers table tr {
+  counter-increment: table-row;
+}
+
+/* 互動式公式選取模式：讓點擊直接落入 td，更容易觸發 CellSelection */
+.formula-builder-active table td *, .formula-builder-active table th * {
+  pointer-events: none;
+}
+.formula-builder-active table {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.formula-builder-active table td, .formula-builder-active table th {
+  cursor: crosshair !important;
+}
+
+.show-excel-headers table td,
+.show-excel-headers table th {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* Row Headers (1, 2, 3...) */
+.show-excel-headers table tr > :first-child::before {
+  content: counter(table-row);
+  position: absolute;
+  left: -36px;
+  top: -1px;
+  bottom: -1px;
+  width: 36px;
+  text-align: center;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-right: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+html.dark .show-excel-headers table tr > :first-child::before {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+/* Column Headers (A, B, C...) */
+.show-excel-headers table tr:first-child {
+  counter-reset: table-col;
+}
+
+.show-excel-headers table tr:first-child > *::after {
+  counter-increment: table-col;
+  content: counter(table-col, upper-alpha);
+  position: absolute;
+  top: -32px;
+  left: -1px;
+  right: -1px;
+  height: 32px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-bottom: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+html.dark .show-excel-headers table tr:first-child > *::after {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+/* Corner piece (top-left empty square) */
+.show-excel-headers table::before {
+  content: '';
+  position: absolute;
+  top: -32px;
+  left: -36px;
+  width: 36px;
+  height: 32px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-right: none;
+  border-bottom: none;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+html.dark .show-excel-headers table::before {
+  background-color: #0f172a;
+  border-color: #334155;
+}
