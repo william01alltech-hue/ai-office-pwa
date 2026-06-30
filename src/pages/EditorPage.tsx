@@ -43,6 +43,7 @@ const EditorPage: React.FC = () => {
     points,
     userApiKey, showAiSidebar, showFileLibrary, showPreviewPanel,
     activeEditors, setActiveEditors,
+    setSelectedFile,
     setIsUploading,
     computeMode,
     aiFormulaInput, aiTranslation, setAiTranslation, isTranslating, setIsTranslating,
@@ -53,6 +54,12 @@ const EditorPage: React.FC = () => {
   const [docxHtml, setDocxHtml] = useState<string>('');
   const [xlsxHtml, setXlsxHtml] = useState<string>('');
   const [pptxHtml, setPptxHtml] = useState<string>('');
+
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
+  const [showSavePrompt, setShowSavePrompt] = useState(false);
+  const [pendingFileToOpen, setPendingFileToOpen] = useState<File | null>(null);
+  const [autoLoadFile, setAutoLoadFile] = useState<File | null>(null);
+  const [fileToLoadAfterExport, setFileToLoadAfterExport] = useState<File | null>(null);
 
   const univerContainerRef = useRef<HTMLDivElement | null>(null);
   const univerApiRef = useRef<any>(null);
@@ -121,8 +128,27 @@ const EditorPage: React.FC = () => {
     return () => { ignore = true; };
   }, [selectedFile, setParsedPptxSlides, setParsedXlsxSheet]);
 
+  useEffect(() => {
+    if (!autoLoadFile || !selectedFile || autoLoadFile !== selectedFile) return;
+
+    let isReady = false;
+    if (selectedFile.name.endsWith('.docx') || selectedFile.name.endsWith('.doc')) {
+      isReady = !!docxHtml;
+    } else if (selectedFile.name.endsWith('.xlsx') || selectedFile.name.endsWith('.xls')) {
+      isReady = !!parsedXlsxSheet;
+    } else if (selectedFile.name.endsWith('.pptx')) {
+      isReady = parsedPptxSlides.length > 0;
+    }
+
+    if (isReady) {
+      handleLoadSelectedFile();
+      setAutoLoadFile(null);
+    }
+  }, [autoLoadFile, selectedFile, docxHtml, parsedXlsxSheet, parsedPptxSlides]);
+
   const handleLoadSelectedFile = () => {
     if (!selectedFile) return;
+    setIsFileLoaded(true);
     if (selectedFile.name.endsWith('.docx') || selectedFile.name.endsWith('.doc')) {
       setActiveEditors(['word']);
       setWordData(docxHtml);
@@ -142,7 +168,7 @@ const EditorPage: React.FC = () => {
             }
           }
         }
-        univerApiRef.current.createUniverSheet({ id: 'imported-workbook', name: selectedFile.name, sheetOrder: ['sheet-1'], sheets: { 'sheet-1': { id: 'sheet-1', name: 'Sheet1', cellData, rowCount: Math.max(100, rowCount), columnCount: Math.max(30, colCount) } } });
+        univerApiRef.current.createUniverSheet({ id: `imported-workbook-${Date.now()}`, name: selectedFile.name, sheetOrder: ['sheet-1'], sheets: { 'sheet-1': { id: 'sheet-1', name: 'Sheet1', cellData, rowCount: Math.max(100, rowCount), columnCount: Math.max(30, colCount) } } });
       }
     } else if (selectedFile.name.endsWith('.pptx')) {
       setActiveEditors(['ppt']);
@@ -334,6 +360,45 @@ Preserve the exact grid layout. If cells are merged, assign the value to the top
       const blob = new Blob([buffer as ArrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
       await saveFile(blob, 'exported_presentation.pptx', { 'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'] });
     }
+
+    if (fileToLoadAfterExport) {
+      setSelectedFile(fileToLoadAfterExport);
+      setAutoLoadFile(fileToLoadAfterExport);
+      setFileToLoadAfterExport(null);
+      setPendingFileToOpen(null);
+    }
+  };
+
+
+
+  const handleDoubleClickFile = (file: File) => {
+    if (isFileLoaded) {
+      setPendingFileToOpen(file);
+      setShowSavePrompt(true);
+    } else {
+      setSelectedFile(file);
+      setAutoLoadFile(file);
+    }
+  };
+
+  const confirmSaveAndOpen = () => {
+    setFileToLoadAfterExport(pendingFileToOpen);
+    handleExportClick();
+    setShowSavePrompt(false);
+  };
+
+  const confirmDontSaveAndOpen = () => {
+    if (pendingFileToOpen) {
+      setSelectedFile(pendingFileToOpen);
+      setAutoLoadFile(pendingFileToOpen);
+    }
+    setPendingFileToOpen(null);
+    setShowSavePrompt(false);
+  };
+
+  const cancelOpen = () => {
+    setPendingFileToOpen(null);
+    setShowSavePrompt(false);
   };
 
   const handleExportClick = () => {
@@ -462,7 +527,7 @@ ${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData
         {showFileLibrary && (
           <>
             <Panel id="library-panel" defaultSize={15} minSize={5} className="bg-[#93bbf6] dark:bg-blue-900/40 flex flex-col z-20 border-r border-[#7aa9ed] dark:border-blue-800/50 shadow-sm">
-              <FileLibrary />
+              <FileLibrary onDoubleClickFile={handleDoubleClickFile} />
             </Panel>
             <PanelResizeHandle className="w-1.5 bg-[#7aa9ed]/50 dark:bg-blue-800/30 hover:bg-blue-500 cursor-col-resize transition-colors z-30" />
           </>
@@ -522,6 +587,25 @@ ${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData
           </PanelGroup>
         </Panel>
       </PanelGroup>
+      {showSavePrompt && (
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t('editor.save_prompt_title') || '是否要儲存目前檔案？'}</h3>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">{t('editor.save_prompt_desc') || '您目前有已開啟的檔案。在開啟新檔前，您要先儲存並下載目前的變更嗎？'}</p>
+            <div className="flex justify-end gap-3">
+              <button onClick={cancelOpen} className="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 font-medium transition-colors">
+                {t('editor.cancel') || '取消'}
+              </button>
+              <button onClick={confirmDontSaveAndOpen} className="px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 font-medium transition-colors">
+                {t('editor.dont_save') || '不要儲存'}
+              </button>
+              <button onClick={confirmSaveAndOpen} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-sm">
+                {t('editor.save_and_open') || '儲存並開啟'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

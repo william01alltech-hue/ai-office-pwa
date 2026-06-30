@@ -7,7 +7,7 @@ const ALLOWED_EXTENSIONS = ['.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '
 const isAllowedFile = (name: string) => ALLOWED_EXTENSIONS.some(ext => name.toLowerCase().endsWith(ext));
 
 // Recursive TreeNode Component
-const TreeNode: React.FC<{ node: FileSystemNode, depth: number, onRemove?: () => void }> = ({ node, depth, onRemove }) => {
+const TreeNode: React.FC<{ node: FileSystemNode, depth: number, onRemove?: () => void, onDoubleClickFile?: (file: File) => void }> = ({ node, depth, onRemove, onDoubleClickFile }) => {
   const { setSelectedFile } = useAppContext();
   const [isOpen, setIsOpen] = useState(node.isOpen || false);
   const [children, setChildren] = useState<FileSystemNode[]>(node.children || []);
@@ -64,6 +64,17 @@ const TreeNode: React.FC<{ node: FileSystemNode, depth: number, onRemove?: () =>
         className={`flex items-center py-1.5 px-2 rounded cursor-pointer transition-colors text-sm tracking-wide truncate hover:bg-white/30 dark:hover:bg-white/10 text-slate-800 dark:text-white`}
         style={{ paddingLeft: `${depth * 1 + 0.5}rem` }}
         onClick={handleToggle}
+        onDoubleClick={async (e) => {
+          e.stopPropagation();
+          if (node.kind === 'file' && onDoubleClickFile) {
+            try {
+              const file = await (node.handle as FileSystemFileHandle).getFile();
+              onDoubleClickFile(file);
+            } catch (err) {
+              console.error("Failed to read file on double click", err);
+            }
+          }
+        }}
         title={node.name}
       >
         <span className="mr-2 opacity-80">
@@ -84,13 +95,13 @@ const TreeNode: React.FC<{ node: FileSystemNode, depth: number, onRemove?: () =>
         )}
       </div>
       {isOpen && children.map((child, idx) => (
-        <TreeNode key={`${child.name}-${idx}`} node={child} depth={depth + 1} />
+        <TreeNode key={`${child.name}-${idx}`} node={child} depth={depth + 1} onDoubleClickFile={onDoubleClickFile} />
       ))}
     </div>
   );
 };
 
-export const FileLibrary: React.FC = () => {
+export const FileLibrary: React.FC<{ onDoubleClickFile?: (file: File) => void }> = ({ onDoubleClickFile }) => {
   const { uploadedFiles, selectedFile, setSelectedFile, fileTrees, setFileTrees, t } = useAppContext();
 
   const handleMountLocalFolder = async () => {
@@ -148,7 +159,8 @@ export const FileLibrary: React.FC = () => {
                 key={`${tree.name}-${idx}`} 
                 node={tree} 
                 depth={0} 
-                onRemove={() => setFileTrees(prev => prev.filter((_, i) => i !== idx))} 
+                onRemove={() => setFileTrees(prev => prev.filter((_, i) => i !== idx))}
+                onDoubleClickFile={onDoubleClickFile}
               />
             ))}
           </div>
@@ -158,6 +170,7 @@ export const FileLibrary: React.FC = () => {
           <div 
             key={idx}
             onClick={() => setSelectedFile(file)}
+            onDoubleClick={() => onDoubleClickFile && onDoubleClickFile(file)}
             className={`text-slate-800 dark:text-white font-bold p-2 px-3 rounded cursor-pointer transition-colors text-sm tracking-wide truncate ${selectedFile === file ? 'bg-white/50 dark:bg-white/20 shadow-sm' : 'hover:bg-white/20 dark:hover:bg-white/10'}`}
             title={file.name}
           >
