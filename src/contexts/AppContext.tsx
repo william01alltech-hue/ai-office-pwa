@@ -64,6 +64,8 @@ interface AppContextType {
   points: number;
   setPoints: React.Dispatch<React.SetStateAction<number>>;
   userApiKey: string;
+  customEndpoint: string;
+  setCustomEndpoint: (endpoint: string) => void;
   setUserApiKey: (key: string) => void;
   showAiSidebar: boolean;
   setShowAiSidebar: (show: boolean) => void;
@@ -152,6 +154,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [points, setPoints] = useState<number>(20);
   const [userApiKey, setUserApiKey] = useState<string>(() => localStorage.getItem('gemini_api_key') || '');
+  const [customEndpoint, setCustomEndpoint] = useState<string>(() => localStorage.getItem('customEndpoint') || 'http://localhost:11434');
   const [showAiSidebar, setShowAiSidebar] = useState<boolean>(true);
   const [showFileLibrary, setShowFileLibrary] = useState<boolean>(true);
   const [showPreviewPanel, setShowPreviewPanel] = useState<boolean>(true);
@@ -257,6 +260,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       parsedXlsxSheet, setParsedXlsxSheet,
       points, setPoints,
       userApiKey, setUserApiKey,
+      customEndpoint, setCustomEndpoint,
       showAiSidebar, setShowAiSidebar,
       showFileLibrary, setShowFileLibrary,
       showPreviewPanel, setShowPreviewPanel,

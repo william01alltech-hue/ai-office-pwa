@@ -31,7 +31,7 @@ export const AiSidebar: React.FC<{
     aiTextInsertMode,
     setAiTextInsertMode,
     t
-  } = useAppContext();
+  , customEndpoint } = useAppContext();
   
   const activeEditor = activeEditors[0] || null;
 
@@ -71,7 +71,7 @@ Respond ONLY with a valid JSON array of objects.`;
     };
 
     try {
-      const response = await fetch('http://localhost:11434/api/generate', {
+      const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -159,7 +159,7 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
     };
 
     try {
-      const response = await fetch('http://localhost:11434/api/generate', {
+      const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -228,7 +228,7 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
     }
 
     try {
-      const response = await fetch('http://localhost:11434/api/generate', {
+      const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

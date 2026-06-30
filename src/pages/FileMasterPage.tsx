@@ -62,7 +62,7 @@ const TOOL_CATEGORIES = [
 ];
 
 const FileMasterPage: React.FC = () => {
-  const { t } = useAppContext();
+  const { t , customEndpoint } = useAppContext();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(TOOL_CATEGORIES[0].id);
   const [activeTool, setActiveTool] = useState(TOOL_CATEGORIES[0].tools[0]);
@@ -543,7 +543,7 @@ Output ONLY a bulleted list of 3 to 5 core conclusions or key points. Do not inc
 Document content:
 ${textToSummarize}`;
 
-          const response = await fetch('http://localhost:11434/api/generate', {
+          const response = await fetch(`${customEndpoint}/api/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -802,7 +802,7 @@ Do not add any conversational responses like "Here is the formatted text", outpu
 Original Text:
 ${textToFormat}`;
 
-          const response = await fetch('http://localhost:11434/api/generate', {
+          const response = await fetch(`${customEndpoint}/api/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

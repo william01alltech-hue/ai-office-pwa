@@ -48,7 +48,7 @@ const EditorPage: React.FC = () => {
     aiFormulaInput, aiTranslation, setAiTranslation, isTranslating, setIsTranslating,
     selectedCellCoord, setActiveCellValue,
     t
-  } = useAppContext();
+  , customEndpoint } = useAppContext();
 
   const [docxHtml, setDocxHtml] = useState<string>('');
   const [xlsxHtml, setXlsxHtml] = useState<string>('');
@@ -195,7 +195,7 @@ Return ONLY a JSON array of objects representing the cells in the table.
 Preserve the exact grid layout. If cells are merged, assign the value to the top-left coordinate. Do not output markdown.`;
 
       // 3. 呼叫本地端 Ollama 視覺模型
-      const response = await fetch('http://localhost:11434/api/generate', {
+      const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

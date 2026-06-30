@@ -4,7 +4,8 @@ import { useAppContext } from '../contexts/AppContext';
 export const SettingsModal: React.FC = () => {
     const { 
     showSettingsModal, setShowSettingsModal, 
-    userApiKey, setUserApiKey, 
+    userApiKey, setUserApiKey,
+    customEndpoint, setCustomEndpoint, 
     computeMode, setComputeMode,
     t
   } = useAppContext();
@@ -26,9 +27,21 @@ export const SettingsModal: React.FC = () => {
             <div className="space-y-3">
               <label className={`flex items-start p-3 border rounded-lg cursor-pointer transition-all ${computeMode === 'local' ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500' : 'border-slate-200 hover:border-indigo-200'}`}>
                 <input type="radio" className="mt-1 mr-3" checked={computeMode === 'local'} onChange={() => setComputeMode('local')} />
-                <div>
+                <div className="w-full">
                   <div className="font-bold text-slate-800 text-sm">{t('settings.mode_a')}</div>
-                  <div className="text-xs text-slate-500 mt-1">{t('settings.mode_a_desc')}</div>
+                  <div className="text-xs text-slate-500 mt-1 mb-2">{t('settings.mode_a_desc')}</div>
+                  {computeMode === 'local' && (
+                    <div className="mt-2">
+                      <div className="text-xs font-bold text-slate-700 mb-1">AI API Endpoint (Ollama / Ngrok):</div>
+                      <input 
+                        type="text" 
+                        placeholder="http://127.0.0.1:11434" 
+                        className="w-full p-2 text-sm border border-slate-300 rounded focus:outline-none focus:border-indigo-500"
+                        value={customEndpoint}
+                        onChange={(e) => setCustomEndpoint(e.target.value)}
+                      />
+                    </div>
+                  )}
                 </div>
               </label>
               
