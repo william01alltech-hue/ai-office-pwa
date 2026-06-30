@@ -2,6 +2,13 @@ export type LanguageKey = 'zh-TW' | 'zh-CN' | 'en-US' | 'es-ES' | 'ja-JP' | 'de-
 
 export const translations: Record<LanguageKey, Record<string, string>> = {
   "zh-TW": {
+    "modal.docs_title": "SyncCore Docs 核心文檔",
+    "modal.docs_desc1": "SyncCore Docs 是一個強大的線上文件編輯器，支援 Excel、Word 和 PowerPoint 格式。",
+    "modal.docs_desc2": "您可以隨時隨地建立和編輯文件，並且完全整合了最新的 AI 輔助功能，讓文件創作更加得心應手。",
+    "modal.filemaster_title": "關於 FileMaster",
+    "modal.playground_title": "關於 Playground",
+    "modal.sticker_title": "關於 StickerStudio",
+
     "color.dark_gray": "深灰",
     "color.red": "紅色",
     "color.orange": "橘色",
