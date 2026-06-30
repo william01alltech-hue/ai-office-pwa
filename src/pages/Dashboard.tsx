@@ -117,11 +117,11 @@ const Dashboard: React.FC = () => {
                     value={aiLanguage}
                     onChange={(e) => setAiLanguage(e.target.value)}
                   >
-                    <option value="zh-TW">繁體中文</option>
-                    <option value="zh-CN">简体中文</option>
+                    <option value="繁體中文 (zh-TW)">繁體中文</option>
+                    <option value="简体中文 (zh-CN)">简体中文</option>
                     <option value="English (en-US)">English</option>
                     <option value="Español (es-ES)">Español</option>
-                    <option value="ja-JP">日本語</option>
+                    <option value="日本語 (ja-JP)">日本語</option>
                     <option value="Deutsch (de-DE)">Deutsch</option>
                     <option value="Français (fr-FR)">Français</option>
                     <option value="Português (pt-BR)">Português</option>
