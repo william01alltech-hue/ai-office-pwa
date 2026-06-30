@@ -32,7 +32,7 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "lang.ja": "日本語",
     "dash.fm_title": "FileMaster 檔案大師",
     "dash.fm_desc1": "是您檔案處理的萬能瑞士刀。我們提供多種格式轉換與處理工具。",
-    "dash.fm_desc2": "包含強大的 PDF 工具（如合併、分割、轉檔）、進階影像處理（去背、格式轉換），並且能透過 AI 視覺技術，將圖片中的表格直接轉換成可以編輯的 Excel 或 Word 檔案。滿足您所有的數位轉型需求。",
+    "dash.fm_desc2": "包含強大的 PDF 工具（如合併、分割、轉檔）、進階影像處理（去背、格式轉換），並且能透過 AI 視覺技術，將圖片中的表格直接轉換成可以編輯的文件和表格檔案。滿足您所有的數位轉型需求。",
     "dash.st_title": "StickerStudio 貼圖工坊",
     "dash.st_desc1": "提供您自由創作個性化貼圖與素材的空間。",
     "dash.st_desc2": "我們整合了強大的繪圖功能與 AI 智慧生成，可以輕鬆設計專屬於您的精美貼圖，不僅可以直接使用在聊天軟體中，還能隨時插入您的文檔中增添豐富色彩。",
