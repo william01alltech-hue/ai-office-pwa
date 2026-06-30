@@ -3,7 +3,7 @@ export type LanguageKey = 'zh-TW' | 'zh-CN' | 'en-US' | 'es-ES' | 'ja-JP' | 'de-
 export const translations: Record<LanguageKey, Record<string, string>> = {
   "zh-TW": {
     "modal.docs_title": "SyncCore Docs 核心文檔",
-    "modal.docs_desc1": "SyncCore Docs 是一個強大的線上文件編輯器，支援 Excel、Word 和 PowerPoint 格式。",
+    "modal.docs_desc1": "SyncCore Docs 是一個強大的線上文件編輯器，支援文件、表格及簡報格式。",
     "modal.docs_desc2": "您可以隨時隨地建立和編輯文件，並且完全整合了最新的 AI 輔助功能，讓文件創作更加得心應手。",
     "modal.filemaster_title": "關於 FileMaster",
     "modal.playground_title": "關於 Playground",
@@ -500,7 +500,7 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
   },
   "zh-CN": {
     "modal.docs_title": "SyncCore Docs 核心文档",
-    "modal.docs_desc1": "SyncCore Docs 是一个强大的在线文档编辑器，支持 Excel、Word 和 PowerPoint 格式。",
+    "modal.docs_desc1": "SyncCore Docs 是一个强大的在线文档编辑器，支持文档、表格及演示文稿格式。",
     "modal.docs_desc2": "您可以随时随地创建和编辑文档，并且完全整合了最新的 AI 辅助功能，让文档创作更加得心应手。",
     "modal.filemaster_title": "关于 FileMaster",
     "modal.playground_title": "关于 Playground",
@@ -917,7 +917,7 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
   },
   "en-US": {
     "modal.docs_title": "SyncCore Docs",
-    "modal.docs_desc1": "SyncCore Docs is a powerful online document editor that supports Excel, Word, and PowerPoint formats.",
+    "modal.docs_desc1": "SyncCore Docs is a powerful online document editor that supports document, spreadsheet, and presentation formats.",
     "modal.docs_desc2": "You can create and edit documents anytime, anywhere, with fully integrated AI assistance to streamline your workflow.",
     "modal.filemaster_title": "About FileMaster",
     "modal.playground_title": "About Playground",
@@ -1904,7 +1904,7 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
   },
   "ja-JP": {
     "modal.docs_title": "SyncCore Docs コアドキュメント",
-    "modal.docs_desc1": "SyncCore Docs は、Excel、Word、PowerPoint 形式をサポートする強力なオンライン ドキュメント エディターです。",
+    "modal.docs_desc1": "SyncCore Docs は、ドキュメント、スプレッドシート、プレゼンテーション形式をサポートする強力なオンライン ドキュメント エディターです。",
     "modal.docs_desc2": "いつでもどこでもドキュメントを作成および編集でき、最新の AI アシスタント機能が完全に統合されているため、ドキュメント作成がさらに便利になります。",
     "modal.filemaster_title": "FileMaster について",
     "modal.playground_title": "Playground について",
@@ -4382,7 +4382,7 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
   },
   "ko-KR": {
     "modal.docs_title": "SyncCore Docs 핵심 문서",
-    "modal.docs_desc1": "SyncCore Docs는 Excel, Word, PowerPoint 형식을 지원하는 강력한 온라인 문서 편집기입니다.",
+    "modal.docs_desc1": "SyncCore Docs는 문서, 스프레드시트, 프레젠테이션 형식을 지원하는 강력한 온라인 문서 편집기입니다.",
     "modal.docs_desc2": "언제 어디서나 문서를 작성하고 편집할 수 있으며, 최신 AI 지원 기능이 완전히 통합되어 문서 작성을 더 편리하게 합니다.",
     "modal.filemaster_title": "FileMaster 정보",
     "modal.playground_title": "Playground 정보",
