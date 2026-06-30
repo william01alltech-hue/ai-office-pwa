@@ -2,6 +2,8 @@ export type LanguageKey = 'zh-TW' | 'zh-CN' | 'en-US' | 'es-ES' | 'ja-JP' | 'de-
 
 export const translations: Record<LanguageKey, Record<string, string>> = {
   "zh-TW": {
+    "dash.badge": "全新推出",
+
     "dash.search": "搜尋...",
 
     "modal.docs_title": "SyncCore Docs 核心文檔",
@@ -501,6 +503,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "重新加载网页"
   },
   "zh-CN": {
+    "dash.badge": "全新推出",
+
     "dash.search": "搜索...",
 
     "modal.docs_title": "SyncCore Docs 核心文档",
@@ -920,6 +924,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "dash.recent_files": "最近打开的文件"
   },
   "en-US": {
+    "dash.badge": "NEW RELEASE",
+
     "dash.search": "Search...",
 
     "modal.docs_title": "SyncCore Docs",
@@ -1909,6 +1915,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ja-JP": {
+    "dash.badge": "新着",
+
     "dash.search": "検索...",
 
     "modal.docs_title": "SyncCore Docs コアドキュメント",
@@ -2408,6 +2416,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "de-DE": {
+    "dash.badge": "NEU",
+
     "dash.search": "Suchen...",
 
     "modal.docs_title": "SyncCore Docs",
@@ -2907,6 +2917,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "fr-FR": {
+    "dash.badge": "NOUVEAU",
+
     "dash.search": "Rechercher...",
 
     "modal.docs_title": "Documents SyncCore",
@@ -3406,6 +3418,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "pt-BR": {
+    "dash.badge": "NOVO",
+
     "dash.search": "Pesquisar...",
 
     "modal.docs_title": "Documentos SyncCore",
@@ -4395,6 +4409,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ko-KR": {
+    "dash.badge": "신규 출시",
+
     "dash.search": "검색...",
 
     "modal.docs_title": "SyncCore Docs 핵심 문서",
@@ -4894,6 +4910,8 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ar-SA": {
+    "dash.badge": "جديد",
+
     "dash.search": "بحث...",
 
     "modal.docs_title": "مستندات SyncCore",
