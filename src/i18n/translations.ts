@@ -499,6 +499,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "重新加载网页"
   },
   "zh-CN": {
+    "modal.docs_title": "SyncCore Docs 核心文档",
+    "modal.docs_desc1": "SyncCore Docs 是一个强大的在线文档编辑器，支持 Excel、Word 和 PowerPoint 格式。",
+    "modal.docs_desc2": "您可以随时随地创建和编辑文档，并且完全整合了最新的 AI 辅助功能，让文档创作更加得心应手。",
+    "modal.filemaster_title": "关于 FileMaster",
+    "modal.playground_title": "关于 Playground",
+    "modal.sticker_title": "关于 StickerStudio",
+
     "color.dark_gray": "深灰",
     "color.red": "红色",
     "color.orange": "橙色",
@@ -909,6 +916,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "dash.recent_files": "最近打开的文件"
   },
   "en-US": {
+    "modal.docs_title": "SyncCore Docs",
+    "modal.docs_desc1": "SyncCore Docs is a powerful online document editor that supports Excel, Word, and PowerPoint formats.",
+    "modal.docs_desc2": "You can create and edit documents anytime, anywhere, with fully integrated AI assistance to streamline your workflow.",
+    "modal.filemaster_title": "About FileMaster",
+    "modal.playground_title": "About Playground",
+    "modal.sticker_title": "About StickerStudio",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -1889,6 +1903,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ja-JP": {
+    "modal.docs_title": "SyncCore Docs コアドキュメント",
+    "modal.docs_desc1": "SyncCore Docs は、Excel、Word、PowerPoint 形式をサポートする強力なオンライン ドキュメント エディターです。",
+    "modal.docs_desc2": "いつでもどこでもドキュメントを作成および編集でき、最新の AI アシスタント機能が完全に統合されているため、ドキュメント作成がさらに便利になります。",
+    "modal.filemaster_title": "FileMaster について",
+    "modal.playground_title": "Playground について",
+    "modal.sticker_title": "StickerStudio について",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -2379,6 +2400,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "de-DE": {
+    "modal.docs_title": "SyncCore Docs",
+    "modal.docs_desc1": "SyncCore Docs ist ein leistungsstarker Online-Dokumenteneditor.",
+    "modal.docs_desc2": "Erstellen und bearbeiten Sie Dokumente überall mit integrierter KI-Unterstützung.",
+    "modal.filemaster_title": "Über FileMaster",
+    "modal.playground_title": "Über Playground",
+    "modal.sticker_title": "Über StickerStudio",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -2869,6 +2897,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "fr-FR": {
+    "modal.docs_title": "Documents SyncCore",
+    "modal.docs_desc1": "SyncCore Docs est un puissant éditeur de documents en ligne.",
+    "modal.docs_desc2": "Créez et modifiez des documents n'importe où avec l'assistance IA intégrée.",
+    "modal.filemaster_title": "À propos de FileMaster",
+    "modal.playground_title": "À propos de Playground",
+    "modal.sticker_title": "À propos de StickerStudio",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -3359,6 +3394,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "pt-BR": {
+    "modal.docs_title": "Documentos SyncCore",
+    "modal.docs_desc1": "SyncCore Docs é um poderoso editor de documentos online.",
+    "modal.docs_desc2": "Crie e edite documentos em qualquer lugar com assistência de IA integrada.",
+    "modal.filemaster_title": "Sobre o FileMaster",
+    "modal.playground_title": "Sobre o Playground",
+    "modal.sticker_title": "Sobre o StickerStudio",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -4339,6 +4381,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ko-KR": {
+    "modal.docs_title": "SyncCore Docs 핵심 문서",
+    "modal.docs_desc1": "SyncCore Docs는 Excel, Word, PowerPoint 형식을 지원하는 강력한 온라인 문서 편집기입니다.",
+    "modal.docs_desc2": "언제 어디서나 문서를 작성하고 편집할 수 있으며, 최신 AI 지원 기능이 완전히 통합되어 문서 작성을 더 편리하게 합니다.",
+    "modal.filemaster_title": "FileMaster 정보",
+    "modal.playground_title": "Playground 정보",
+    "modal.sticker_title": "StickerStudio 정보",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
@@ -4829,6 +4878,13 @@ export const translations: Record<LanguageKey, Record<string, string>> = {
     "error.reload": "Reload Page"
   },
   "ar-SA": {
+    "modal.docs_title": "مستندات SyncCore",
+    "modal.docs_desc1": "SyncCore Docs هو محرر مستندات قوي عبر الإنترنت.",
+    "modal.docs_desc2": "قم بإنشاء وتحرير المستندات في أي مكان باستخدام مساعدة الذكاء الاصطناعي.",
+    "modal.filemaster_title": "حول FileMaster",
+    "modal.playground_title": "حول Playground",
+    "modal.sticker_title": "حول StickerStudio",
+
     "color.dark_gray": "Dark Gray",
     "color.red": "Red",
     "color.orange": "Orange",
