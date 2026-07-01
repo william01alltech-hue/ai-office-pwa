@@ -137,6 +137,15 @@ const Dashboard: React.FC = () => {
                     {isAdmin && <span className="mt-1 inline-block text-[10px] font-bold text-white bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 rounded-full">👑 管理員</span>}
                     {userProfile?.role === 'enterprise' && <span className="mt-1 inline-block text-[10px] font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 px-2 py-0.5 rounded-full">🏢 企業版</span>}
                   </div>
+                  {isAdmin && (
+                    <button
+                      onClick={() => { navigate('/admin'); setShowUserMenu(false); }}
+                      className="w-full text-left px-4 py-3 text-sm text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 flex items-center gap-2 transition-colors border-b border-slate-100 dark:border-slate-700"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                      管理後台
+                    </button>
+                  )}
                   {userProfile?.role === 'user' && (
                     <button
                       onClick={() => { setShowUserMenu(false); setShowInviteModal(true); }}

@@ -9,6 +9,7 @@ import FileMasterPage from './pages/FileMasterPage';
 import StickerStudioPage from './pages/StickerStudioPage';
 import PlaygroundPage from './pages/PlaygroundPage';
 import { LoginPage } from './pages/LoginPage';
+import AdminPage from './pages/AdminPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAdBanner } from './components/ads/GoogleAdBanner';
 
@@ -35,6 +36,7 @@ export default function App() {
                   <Route path="/tools" element={<FileMasterPage />} />
                   <Route path="/sticker-studio" element={<StickerStudioPage />} />
                   <Route path="/playground" element={<PlaygroundPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
                   <Route path="/:type/:id" element={<EditorPage />} />
                 </Routes>
               </div>
