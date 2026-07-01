@@ -7,7 +7,7 @@ export const Navbar: React.FC<{
   handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleExport: () => void;
 }> = ({ handleFileUpload, handleExport }) => {
-  const { activeEditors, setActiveEditors, userApiKey, points, setShowSettingsModal, isUploading, showFileLibrary, setShowFileLibrary, showPreviewPanel, setShowPreviewPanel, showAiSidebar, setShowAiSidebar, t } = useAppContext();
+  const { activeEditors, setActiveEditors, setShowSettingsModal, isUploading, showFileLibrary, setShowFileLibrary, showPreviewPanel, setShowPreviewPanel, showAiSidebar, setShowAiSidebar, t } = useAppContext();
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   
@@ -66,19 +66,18 @@ export const Navbar: React.FC<{
         {currentUser ? (
           <div translate="no" className="hidden md:flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
             {currentUser.photoURL ? (
-              <img src={currentUser.photoURL} alt="Avatar" className="w-5 h-5 rounded-full" />
+              <img src={currentUser.photoURL} alt="" className="w-5 h-5 rounded-full" />
             ) : (
               <span className="text-xs">👤</span>
             )}
-            <span className="text-xs text-slate-700 dark:text-white max-w-[100px] truncate">
-              <span>{currentUser.email}</span>
-            </span>
-            <button onClick={logout} className="text-xs text-slate-500 hover:text-red-500 ml-2" title="登出">
+            <span className="text-xs text-slate-700 dark:text-white max-w-[100px] truncate">{currentUser.displayName || currentUser.email}</span>
+            <button type="button" onClick={logout} className="text-xs text-slate-500 hover:text-red-500 ml-2" title="登出">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
             </button>
           </div>
         ) : (
           <button 
+            type="button"
             onClick={() => navigate('/login')}
             className="text-xs font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-1.5 rounded border border-transparent shadow-sm hover:from-blue-600 hover:to-indigo-600 transition-colors"
           >
@@ -86,20 +85,12 @@ export const Navbar: React.FC<{
           </button>
         )}
 
-        <span translate="no" className="hidden md:flex text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 items-center">
-          <span className="mr-1.5 text-xs text-yellow-500">🪙</span>
-          <span>{t('nav.compute')}</span>：
-          <span className="font-bold">
-            {userApiKey ? <span>{t('nav.unlimited')}</span> : <span>{points} {t('nav.points')}</span>}
-          </span>
-        </span>
-
-        <button className="text-xs text-slate-500 dark:text-white bg-slate-100 dark:bg-slate-800 p-1.5 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm" onClick={() => setShowSettingsModal(true)}>⚙️ {t('nav.settings')}</button>
+        <button type="button" className="text-xs text-slate-500 dark:text-white bg-slate-100 dark:bg-slate-800 p-1.5 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm" onClick={() => setShowSettingsModal(true)}>⚙️ {t('nav.settings')}</button>
         <label className={`cursor-pointer text-sm font-medium ${isUploading ? 'bg-slate-400' : 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600'} text-white px-4 py-1.5 rounded transition-all shadow-md hidden md:flex items-center space-x-1`}>
           <span>{isUploading ? t('nav.processing') : t('nav.image_to_table')}</span>
           <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} disabled={isUploading} />
         </label>
-        <button onClick={handleExport} className="text-sm font-medium bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded transition-colors shadow-md hidden md:block" disabled={activeEditors.length === 0}>
+        <button type="button" onClick={handleExport} className="text-sm font-medium bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded transition-colors shadow-md hidden md:block" disabled={activeEditors.length === 0}>
           {mainEditor === 'excel' ? t('nav.export_excel') : mainEditor === 'word' ? t('nav.export_word') : mainEditor === 'ppt' ? t('nav.export_ppt') : t('nav.export_file')}
         </button>
       </div>
