@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
   const { currentUser, userProfile, isAdmin, logout } = useAuth();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -22,6 +23,18 @@ const Dashboard: React.FC = () => {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  // 點擊外部關閉用戶選單
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#user-menu-container')) {
+        setShowUserMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleInstallClick = async () => {
@@ -87,7 +100,7 @@ const Dashboard: React.FC = () => {
           </button>
           
           {currentUser ? (
-            <div className="flex items-center gap-2 relative group">
+            <div id="user-menu-container" className="flex items-center gap-2 relative">
               <div className="flex flex-col items-end">
                 {isAdmin && (
                   <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 rounded-full mb-0.5 shadow-sm">
@@ -100,26 +113,31 @@ const Dashboard: React.FC = () => {
                   </span>
                 )}
               </div>
-              {currentUser.photoURL ? (
-                <img src={currentUser.photoURL} alt="Avatar" className="w-9 h-9 rounded-full shadow-sm border-2 border-white ring-2 ring-slate-100 cursor-pointer" />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-white font-medium cursor-pointer shadow-sm border-2 border-white ring-2 ring-slate-100">
-                  {currentUser.email?.charAt(0).toUpperCase()}
+              <button onClick={() => setShowUserMenu(v => !v)} className="focus:outline-none">
+                {currentUser.photoURL ? (
+                  <img src={currentUser.photoURL} alt="Avatar" className="w-9 h-9 rounded-full shadow-sm border-2 border-white ring-2 ring-slate-100 cursor-pointer hover:ring-blue-300 transition-all" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-white font-medium cursor-pointer shadow-sm border-2 border-white ring-2 ring-slate-100 hover:ring-blue-300 transition-all">
+                    {currentUser.email?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </button>
+              {showUserMenu && (
+                <div className="absolute right-0 top-12 w-52 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                    <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{currentUser.displayName}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{currentUser.email}</p>
+                    {isAdmin && <span className="mt-1 inline-block text-[10px] font-bold text-white bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 rounded-full">👑 管理員</span>}
+                  </div>
+                  <button 
+                    onClick={() => { logout(); setShowUserMenu(false); }}
+                    className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    登出
+                  </button>
                 </div>
               )}
-              <div className="absolute right-0 top-12 w-48 hidden group-hover:block bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl rounded-xl overflow-hidden z-50">
-                <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-                  <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{currentUser.displayName}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{currentUser.email}</p>
-                </div>
-                <button 
-                  onClick={logout}
-                  className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                  登出
-                </button>
-              </div>
             </div>
           ) : (
             <button 
