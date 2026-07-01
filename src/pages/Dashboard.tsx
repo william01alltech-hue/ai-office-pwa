@@ -197,8 +197,9 @@ const Dashboard: React.FC = () => {
               
               <div className="flex items-center gap-5 bg-white/70 dark:bg-slate-800/70 backdrop-blur-2xl p-2.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-white dark:border-slate-700/80">
                 <div className="flex items-center gap-2 pl-2">
-                  <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{t('dash.lang')}</span>
+                  <label htmlFor="lang-select" className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase tracking-widest">{t('dash.lang')}</label>
                   <select
+                    id="lang-select"
                     className="bg-transparent border-none text-sm font-bold text-slate-700 dark:text-slate-200 py-1 pl-1 pr-6 focus:ring-0 outline-none cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     value={aiLanguage}
                     onChange={(e) => setAiLanguage(e.target.value)}
