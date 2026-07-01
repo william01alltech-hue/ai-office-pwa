@@ -19,8 +19,8 @@ export const LoginPage: React.FC = () => {
       toast.success('登入成功！');
       navigate(from, { replace: true });
     } catch (error: any) {
-      console.error(error);
-      toast.error('登入失敗，請重試。');
+      console.error("Login Error:", error);
+      toast.error(`登入失敗: ${error.message || error.code || '未知錯誤'}`);
     } finally {
       setIsLoggingIn(false);
     }
