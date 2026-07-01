@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useAppContext } from '../contexts/AppContext';
 
 export const LoginPage: React.FC = () => {
   const { loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const { t } = useAppContext();
 
   // Redirect to where the user came from or to home
   const from = (location.state as any)?.from?.pathname || "/";
@@ -18,11 +16,11 @@ export const LoginPage: React.FC = () => {
     try {
       setIsLoggingIn(true);
       await loginWithGoogle();
-      toast.success(t('auth.login_success') || '登入成功！');
+      toast.success('登入成功！');
       navigate(from, { replace: true });
     } catch (error: any) {
       console.error(error);
-      toast.error(t('auth.login_error') || '登入失敗，請重試。');
+      toast.error('登入失敗，請重試。');
     } finally {
       setIsLoggingIn(false);
     }
@@ -35,7 +33,7 @@ export const LoginPage: React.FC = () => {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">AI Office</h1>
             <p className="text-slate-500 dark:text-slate-400">
-              {t('auth.welcome_desc') || '登入以使用專屬的 AI 雲端工作區'}
+              登入以使用專屬的 AI 雲端工作區
             </p>
           </div>
 
@@ -67,12 +65,12 @@ export const LoginPage: React.FC = () => {
                   />
                 </svg>
               )}
-              {t('auth.login_with_google') || '使用 Google 帳號登入'}
+              使用 Google 帳號登入
             </button>
           </div>
 
-          <div className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
-            {t('auth.footer_note') || '登入即表示您同意我們的服務條款與隱私權政策。'}
+          <div className="mt-8 text-center text-sm text-slate-500 dark:text-white">
+            登入即表示您同意我們的服務條款與隱私權政策。
           </div>
         </div>
       </div>
