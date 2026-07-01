@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFileSystem } from '../contexts/FileSystemContext';
 import { useAppContext } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
 import { SettingsModal } from '../components/SettingsModal';
 
 const Dashboard: React.FC = () => {
@@ -9,6 +10,7 @@ const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { files, deleteFile } = useFileSystem();
   const { fontSize, setFontSize, aiLanguage, setAiLanguage, t, setShowSettingsModal } = useAppContext();
+  const { currentUser, logout } = useAuth();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
@@ -83,9 +85,31 @@ const Dashboard: React.FC = () => {
           <button onClick={() => setShowSettingsModal(true)} className="p-2 hover:bg-slate-100 rounded-full hover:text-slate-800 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
           </button>
-          <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-white font-medium cursor-pointer shadow-sm border-2 border-white ring-2 ring-slate-100">
-            EM
-          </div>
+          
+          {currentUser ? (
+            <div className="flex items-center gap-2 relative group">
+              {currentUser.photoURL ? (
+                <img src={currentUser.photoURL} alt="Avatar" className="w-9 h-9 rounded-full shadow-sm border-2 border-white ring-2 ring-slate-100 cursor-pointer" />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-white font-medium cursor-pointer shadow-sm border-2 border-white ring-2 ring-slate-100">
+                  {currentUser.email?.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <button 
+                onClick={logout} 
+                className="absolute right-0 top-10 w-max hidden group-hover:block bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-lg px-4 py-2 text-sm text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 z-50"
+              >
+                登出
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={() => navigate('/login')}
+              className="text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2 rounded-xl shadow-sm hover:from-blue-600 hover:to-indigo-600 transition-all hover:-translate-y-0.5"
+            >
+              登入
+            </button>
+          )}
         </div>
       </header>
 
