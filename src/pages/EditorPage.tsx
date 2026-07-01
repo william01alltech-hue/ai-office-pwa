@@ -487,15 +487,44 @@ ${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData
           result = { formula: t("err.error"), explanation: t("err.invalid_array") };
         }
       } else {
-        // Platform mode (calls backend)
-        const res = await fetch('http://localhost:3000/api/ai/translate-formula', {
+        // Platform mode - 使用共享的地端伺服器 (Ollama)
+        const prompt = `你是一個精通 Excel 公式的小幫手。
+當前選取的儲存格為: ${selectedCellCoord || 'A1'}。
+${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData}\n` : ''}
+【重要指示】：如果使用者的指令中明確指定了儲存格座標或範圍（例如 A1、A1:A3），請務必在公式中「完全照抄」該座標，絕對不可自行偏移列號或行號！
+
+用戶指令：「${aiFormulaInput}」
+
+請將指令轉換為正確的公式，並提供簡單中文說明。
+請嚴格以 JSON 格式回應，格式如下（不要包含 markdown）：
+{"formula": "=SUM(A1)", "explanation_zh": "說明文字"}`;
+
+        const schema = {
+          type: "object",
+          properties: {
+            formula: { type: "string" },
+            explanation_zh: { type: "string" }
+          },
+          required: ["formula", "explanation_zh"]
+        };
+
+        const res = await fetch(`${customEndpoint}/api/generate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: aiFormulaInput, currentCell: selectedCellCoord, contextData })
+          body: JSON.stringify({
+            model: 'qwen2.5-coder:32b',
+            prompt: prompt,
+            stream: false,
+            format: schema
+          })
         });
+
         if (res.ok) {
           const json = await res.json();
-          result = { formula: json.data?.formula || '', explanation: json.data?.explanation_zh || '' };
+          // 清除可能包在 Markdown 內的 JSON
+          const cleanedStr = json.response.replace(/```json\n?|```/g, '').trim();
+          const parsed = JSON.parse(cleanedStr);
+          result = { formula: parsed.formula || '', explanation: parsed.explanation_zh || '' };
         } else {
           result = { formula: t("err.error"), explanation: t("err.api_fail") };
         }
