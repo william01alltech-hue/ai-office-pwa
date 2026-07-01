@@ -218,9 +218,9 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="flex items-center gap-1.5 pr-1">
-                  <button onClick={() => setFontSize('sm')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-bold transition-all duration-300 ${fontSize === 'sm' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.sm')}</button>
-                  <button onClick={() => setFontSize('base')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-bold transition-all duration-300 ${fontSize === 'base' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.md')}</button>
-                  <button onClick={() => setFontSize('lg')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-base font-bold transition-all duration-300 ${fontSize === 'lg' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.lg')}</button>
+                  <button aria-label="縮小字型" onClick={() => setFontSize('sm')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-bold transition-all duration-300 ${fontSize === 'sm' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.sm')}</button>
+                  <button aria-label="標準字型" onClick={() => setFontSize('base')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-sm font-bold transition-all duration-300 ${fontSize === 'base' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.md')}</button>
+                  <button aria-label="放大字型" onClick={() => setFontSize('lg')} className={`w-9 h-9 flex items-center justify-center rounded-xl text-base font-bold transition-all duration-300 ${fontSize === 'lg' ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 scale-105' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white'}`}>{t('dash.lg')}</button>
                 </div>
               </div>
             </div>
@@ -470,7 +470,7 @@ const Dashboard: React.FC = () => {
                 <h3 className="text-xl font-bold text-slate-800 dark:text-white">
                   {activeModal === 'docs' ? t('modal.docs_title') : activeModal === 'filemaster' ? t('modal.filemaster_title') : activeModal === 'playground' ? t('modal.playground_title') : t('modal.sticker_title')}
                 </h3>
-                <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full p-1">
+                <button aria-label="關閉" onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full p-1">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>

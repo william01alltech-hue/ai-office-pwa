@@ -12,7 +12,30 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons.svg'],
       workbox: {
-        maximumFileSizeToCacheInBytes: 30 * 1024 * 1024,
+        // 限制預先快取檔案大小為 2MB，防止一次下載幾十MB造成載入嚴重逾時
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
+        // 只預先快取首頁 index 的 js、css 資源及基本圖示，其餘一律運行時動態加載
+        globPatterns: ['index.html', 'favicon.svg', 'icons.svg', 'assets/index-*.{js,css}'],
+        // 排除大型 chunk 和 vendor
+        globIgnores: ['**/vendor-*.js', '**/firebase-vendor-*.js', '**/EditorPage-*.js', '**/FileMasterPage-*.js', '**/pdfWorker-*.js', '**/*.wasm'],
+        runtimeCaching: [
+          {
+            urlPattern: /.*\.wasm$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'wasm-cache',
+              expiration: { maxEntries: 5, maxAgeSeconds: 30 * 24 * 60 * 60 }
+            }
+          },
+          {
+            urlPattern: /.*pdf\.worker.*\.js$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'pdf-worker-cache',
+              expiration: { maxEntries: 2, maxAgeSeconds: 30 * 24 * 60 * 60 }
+            }
+          }
+        ]
       },
       manifest: {
         name: 'SyncCore AI Office',
@@ -23,12 +46,20 @@ export default defineConfig({
           {
             src: 'favicon.svg',
             sizes: '192x192',
-            type: 'image/svg+xml'
+            type: 'image/svg+xml',
+            purpose: 'any'
           },
           {
             src: 'favicon.svg',
             sizes: '512x512',
-            type: 'image/svg+xml'
+            type: 'image/svg+xml',
+            purpose: 'any'
+          },
+          {
+            src: 'favicon.svg',
+            sizes: '192x192',
+            type: 'image/svg+xml',
+            purpose: 'maskable'
           }
         ]
       }
