@@ -78,6 +78,9 @@ Respond ONLY with a valid JSON array of objects.`;
       }
     };
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
@@ -87,8 +90,11 @@ Respond ONLY with a valid JSON array of objects.`;
           prompt: prompt,
           stream: false,
           format: schema
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) throw new Error('API Error');
       const data = await response.json();
@@ -125,12 +131,9 @@ Respond ONLY with a valid JSON array of objects.`;
         await deductAiPoint();
       } catch (e) {}
     } catch (e: any) {
+      clearTimeout(timeoutId);
       console.error(e);
-      if (e.message === 'Failed to fetch') {
-        alert('無法連線到 Ollama，請確認是否啟動且設定了 CORS (OLLAMA_ORIGINS="*")。');
-      } else {
-        alert('解析 AI 回應失敗，請重試或微調提示詞！(錯誤: ' + e.message + ')');
-      }
+      alert('無法連線至 AI 共享伺服器 🔌。\n請確認管理員電腦已開啟，且 start_share_ai 服務正在執行。');
     } finally {
       setIsGeneratingStyle(false);
     }
@@ -174,6 +177,9 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
       }
     };
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
@@ -183,8 +189,11 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
           prompt: prompt,
           stream: false,
           format: schema
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) throw new Error('API Error');
       const data = await response.json();
@@ -225,12 +234,9 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
         await deductAiPoint();
       } catch (e) {}
     } catch (e: any) {
+      clearTimeout(timeoutId);
       console.error(e);
-      if (e.message === 'Failed to fetch') {
-        alert('無法連線到 Ollama，請確認是否啟動且設定了 CORS (OLLAMA_ORIGINS="*")。');
-      } else {
-        alert('微調失敗，解析 AI 回應發生錯誤！(錯誤: ' + e.message + ')');
-      }
+      alert('無法連線至 AI 共享伺服器 🔌。\n請確認管理員電腦已開啟，且 start_share_ai 服務正在執行。');
     } finally {
       setIsGeneratingStyle(false);
     }
@@ -251,6 +257,9 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
       prompt = basePrompt;
     }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch(`${customEndpoint}/api/generate`, {
         method: 'POST',
@@ -259,8 +268,11 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
           model: 'qwen2.5-coder:32b',
           prompt: prompt,
           stream: false
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) throw new Error('API Error');
       const data = await response.json();
@@ -281,8 +293,9 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
         await deductAiPoint();
       } catch (e) {}
     } catch (e: any) {
+      clearTimeout(timeoutId);
       console.error(e);
-      alert('文字生成失敗！(錯誤: ' + e.message + ')');
+      alert('無法連線至 AI 共享伺服器 🔌。\n請確認管理員電腦已開啟，且 start_share_ai 服務正在執行。');
     } finally {
       setIsGeneratingText(false);
     }

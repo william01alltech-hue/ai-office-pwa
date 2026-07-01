@@ -508,25 +508,39 @@ ${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData
           required: ["formula", "explanation_zh"]
         };
 
-        const res = await fetch(`${customEndpoint}/api/generate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'qwen2.5-coder:32b',
-            prompt: prompt,
-            stream: false,
-            format: schema
-          })
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-        if (res.ok) {
-          const json = await res.json();
-          // 清除可能包在 Markdown 內的 JSON
-          const cleanedStr = json.response.replace(/```json\n?|```/g, '').trim();
-          const parsed = JSON.parse(cleanedStr);
-          result = { formula: parsed.formula || '', explanation: parsed.explanation_zh || '' };
-        } else {
-          result = { formula: t("err.error"), explanation: t("err.api_fail") };
+        try {
+          const res = await fetch(`${customEndpoint}/api/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'qwen2.5-coder:32b',
+              prompt: prompt,
+              stream: false,
+              format: schema
+            }),
+            signal: controller.signal
+          });
+
+          clearTimeout(timeoutId);
+
+          if (res.ok) {
+            const json = await res.json();
+            const cleanedStr = json.response.replace(/```json\n?|```/g, '').trim();
+            const parsed = JSON.parse(cleanedStr);
+            result = { formula: parsed.formula || '', explanation: parsed.explanation_zh || '' };
+          } else {
+            result = { formula: t("err.error"), explanation: 'AI 伺服器回應異常，請稍後重試。' };
+          }
+        } catch (fetchErr: any) {
+          clearTimeout(timeoutId);
+          console.error("Shared local AI endpoint offline", fetchErr);
+          result = { 
+            formula: t("err.error"), 
+            explanation: '無法連線至 AI 共享伺服器 🔌。請確認管理員的電腦已開啟，且 start_share_ai 服務正在執行。' 
+          };
         }
       }
 
