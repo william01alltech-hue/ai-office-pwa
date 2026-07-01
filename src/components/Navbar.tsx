@@ -1,12 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export const Navbar: React.FC<{
   handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleExport: () => void;
 }> = ({ handleFileUpload, handleExport }) => {
   const { activeEditors, setActiveEditors, userApiKey, points, setShowSettingsModal, isUploading, showFileLibrary, setShowFileLibrary, showPreviewPanel, setShowPreviewPanel, showAiSidebar, setShowAiSidebar, t } = useAppContext();
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   
   const toggleEditor = (editor: 'excel' | 'word' | 'ppt') => {
@@ -61,6 +63,27 @@ export const Navbar: React.FC<{
         </button>
       </div>
       <div className="flex items-center space-x-3">
+        {currentUser ? (
+          <div className="hidden md:flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+            {currentUser.photoURL ? (
+              <img src={currentUser.photoURL} alt="Avatar" className="w-5 h-5 rounded-full" />
+            ) : (
+              <span className="text-xs">👤</span>
+            )}
+            <span className="text-xs text-slate-700 dark:text-white max-w-[100px] truncate">{currentUser.email}</span>
+            <button onClick={logout} className="text-xs text-slate-500 hover:text-red-500 ml-2" title="登出">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={() => navigate('/login')}
+            className="text-xs font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-1.5 rounded border border-transparent shadow-sm hover:from-blue-600 hover:to-indigo-600 transition-colors"
+          >
+            登入
+          </button>
+        )}
+
         <span className="hidden md:flex text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 items-center">
           <span className="mr-1.5 text-xs text-yellow-500">🪙</span>{t('nav.compute')}：<span className="font-bold">{userApiKey ? t('nav.unlimited') : `${points} ${t('nav.points')}`}</span>
         </span>
