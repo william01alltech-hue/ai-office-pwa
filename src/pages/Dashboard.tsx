@@ -103,20 +103,20 @@ const Dashboard: React.FC = () => {
           
           {currentUser ? (
             <div id="user-menu-container" className="flex items-center gap-2 relative">
-              <div className="flex flex-col items-end">
+              <div translate="no" className="flex flex-col items-end">
                 {isAdmin && (
                   <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 rounded-full mb-0.5 shadow-sm">
-                    👑 管理員
+                    <span>👑 管理員</span>
                   </span>
                 )}
                 {userProfile?.role === 'enterprise' && (
                   <span className="text-[10px] font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 px-2 py-0.5 rounded-full mb-0.5 shadow-sm">
-                    🏢 企業版
+                    <span>🏢 企業版</span>
                   </span>
                 )}
                 {userProfile?.role === 'user' && userProfile && (
                   <span className="text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-full mb-0.5">
-                    🪙 {userProfile.points} 點
+                    🪙 <span>{userProfile.points} 點</span>
                   </span>
                 )}
               </div>
