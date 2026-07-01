@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA2a81ZEjwE2rTLxyY4KTTABY_vu4lTmao",
+  apiKey: "AIzaSyA2a81ZEjwE2rTLxyY4KTTABY_vu41Tmao",
   authDomain: "aioffice-c4ff2.firebaseapp.com",
   projectId: "aioffice-c4ff2",
   storageBucket: "aioffice-c4ff2.firebasestorage.app",
