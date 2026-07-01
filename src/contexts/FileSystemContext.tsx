@@ -88,7 +88,13 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setIsLoaded(true);
       }
     };
-    loadFiles();
+    
+    // 延遲 300 毫秒加載檔案，避開瀏覽器最繁忙的初次渲染黃金期
+    const timer = setTimeout(() => {
+      loadFiles();
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const saveFiles = async (updatedFiles: VirtualFile[]) => {

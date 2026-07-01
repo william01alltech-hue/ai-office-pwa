@@ -17,7 +17,8 @@ html, body {
   overflow: hidden;
   background-color: var(--color-neo-bg);
   color: var(--color-neo-text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans TC", sans-serif;
+  font-display: swap;
   @apply transition-colors duration-300;
 }
 
