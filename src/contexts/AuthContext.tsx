@@ -11,6 +11,7 @@ interface AuthContextType {
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
   isAdmin: boolean;
 }
 
@@ -29,16 +30,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const loadProfile = async (user: User) => {
+    try {
+      const profile = await getOrCreateUserProfile(user);
+      setUserProfile(profile);
+    } catch (e) {
+      console.error('Failed to load user profile:', e);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
-        try {
-          const profile = await getOrCreateUserProfile(user);
-          setUserProfile(profile);
-        } catch (e) {
-          console.error('Failed to load user profile:', e);
-        }
+        await loadProfile(user);
       } else {
         setUserProfile(null);
       }
@@ -47,6 +52,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return unsubscribe;
   }, []);
+
+  const refreshProfile = async () => {
+    if (currentUser) await loadProfile(currentUser);
+  };
 
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -76,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     loginWithGoogle,
     logout,
+    refreshProfile,
     isAdmin,
   };
 

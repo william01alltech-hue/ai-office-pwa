@@ -4,6 +4,7 @@ import { useFileSystem } from '../contexts/FileSystemContext';
 import { useAppContext } from '../contexts/AppContext';
 import { useAuth } from '../contexts/AuthContext';
 import { SettingsModal } from '../components/SettingsModal';
+import { InviteCodeModal } from '../components/InviteCodeModal';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Dashboard: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -107,7 +109,12 @@ const Dashboard: React.FC = () => {
                     👑 管理員
                   </span>
                 )}
-                {!isAdmin && userProfile && (
+                {userProfile?.role === 'enterprise' && (
+                  <span className="text-[10px] font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 px-2 py-0.5 rounded-full mb-0.5 shadow-sm">
+                    🏢 企業版
+                  </span>
+                )}
+                {userProfile?.role === 'user' && userProfile && (
                   <span className="text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-full mb-0.5">
                     🪙 {userProfile.points} 點
                   </span>
@@ -128,7 +135,16 @@ const Dashboard: React.FC = () => {
                     <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{currentUser.displayName}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{currentUser.email}</p>
                     {isAdmin && <span className="mt-1 inline-block text-[10px] font-bold text-white bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 rounded-full">👑 管理員</span>}
+                    {userProfile?.role === 'enterprise' && <span className="mt-1 inline-block text-[10px] font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 px-2 py-0.5 rounded-full">🏢 企業版</span>}
                   </div>
+                  {userProfile?.role === 'user' && (
+                    <button
+                      onClick={() => { setShowUserMenu(false); setShowInviteModal(true); }}
+                      className="w-full text-left px-4 py-3 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-2 transition-colors border-b border-slate-100 dark:border-slate-700"
+                    >
+                      🎫 輸入企業邵請碼
+                    </button>
+                  )}
                   <button 
                     onClick={() => { logout(); setShowUserMenu(false); }}
                     className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors"
@@ -485,6 +501,7 @@ const Dashboard: React.FC = () => {
         </div>
       )}
       <SettingsModal />
+      {showInviteModal && <InviteCodeModal onClose={() => setShowInviteModal(false)} />}
     </div>
   );
 };
