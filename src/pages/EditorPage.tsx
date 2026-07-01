@@ -21,11 +21,13 @@ import { SettingsModal } from '../components/SettingsModal';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { useParams } from 'react-router-dom';
 import { InterstitialAdModal } from '../components/ads/InterstitialAdModal';
+import { useAuth } from '../contexts/AuthContext';
 
 const EditorPage: React.FC = () => {
   const { type } = useParams<{ type: string; id: string }>();
   const [showExportAd, setShowExportAd] = useState(false);
   const [isMultiverseMode, setIsMultiverseMode] = useState(false);
+  const { userProfile, deductAiPoint } = useAuth();
   
   useEffect(() => {
     const handleMultiverseToggle = () => setIsMultiverseMode(prev => !prev);
@@ -425,6 +427,13 @@ Preserve the exact grid layout. If cells are merged, assign the value to the top
 
   const handleAiSubmit = async () => {
     if (!aiFormulaInput.trim() || isTranslating) return;
+
+    // 點數檢查（管理員/企業版有 99999 點，不會觸發）
+    if (userProfile && userProfile.role === 'user' && userProfile.points <= 0) {
+      toast.error('⚠️ 算力點數不足！請聯繫管理員取得更多點數。', { duration: 4000 });
+      return;
+    }
+
     setIsTranslating(true);
     
     let contextData = '';
@@ -493,6 +502,13 @@ ${contextData ? `當前表格上下文資料（二維陣列）：\n${contextData
       }
 
       setAiTranslation(result);
+
+      // AI 呼叫成功後扣點
+      try {
+        await deductAiPoint();
+      } catch (e) {
+        // 扣點失敗不影響主流程（管理員/企業版會靜默跳過）
+      }
     } catch (e: any) {
       console.error(e);
       setAiTranslation({ formula: t("err.error"), explanation: e.message || t('err.unknown') });

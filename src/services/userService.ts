@@ -96,3 +96,19 @@ export const redeemInviteCode = async (uid: string, code: string): Promise<UserR
     return 'enterprise' as UserRole;
   });
 };
+
+// 扣除一點算力 - 管理員與企業版跳過
+export const deductPoint = async (uid: string, role: UserRole): Promise<number> => {
+  if (role === 'admin' || role === 'enterprise') return 99999;
+  
+  const userRef = doc(db, 'users', uid);
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) throw new Error('用戶不存在');
+  
+  const profile = userSnap.data() as UserProfile;
+  if (profile.points <= 0) throw new Error('INSUFFICIENT_POINTS');
+  
+  const newPoints = profile.points - 1;
+  await setDoc(userRef, { points: newPoints }, { merge: true });
+  return newPoints;
+};

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { getOrCreateUserProfile } from '../services/userService';
+import { getOrCreateUserProfile, deductPoint } from '../services/userService';
 import type { UserProfile } from '../services/userService';
 
 interface AuthContextType {
@@ -12,6 +12,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  deductAiPoint: () => Promise<number>;
   isAdmin: boolean;
 }
 
@@ -57,6 +58,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (currentUser) await loadProfile(currentUser);
   };
 
+  const deductAiPoint = async (): Promise<number> => {
+    if (!currentUser || !userProfile) throw new Error('INSUFFICIENT_POINTS');
+    const newPoints = await deductPoint(currentUser.uid, userProfile.role);
+    setUserProfile(prev => prev ? { ...prev, points: newPoints } : null);
+    return newPoints;
+  };
+
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -86,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loginWithGoogle,
     logout,
     refreshProfile,
+    deductAiPoint,
     isAdmin,
   };
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 export const AiSidebar: React.FC<{
   handleAiSubmit: () => void;
@@ -10,6 +12,7 @@ export const AiSidebar: React.FC<{
   const [aiTextPrompt, setAiTextPrompt] = useState('');
   const [isGeneratingStyle, setIsGeneratingStyle] = useState(false);
   const [isGeneratingText, setIsGeneratingText] = useState(false);
+  const { userProfile, deductAiPoint } = useAuth();
   
   const { 
     activeEditors,
@@ -46,6 +49,11 @@ export const AiSidebar: React.FC<{
   }, [activeEditor]);
 
   const handleGenerateBeautify = async () => {
+    if (userProfile && userProfile.role === 'user' && userProfile.points <= 0) {
+      toast.error('⚠️ 算力點數不足！請聯繫管理員取得更多點數。', { duration: 4000 });
+      return;
+    }
+
     setIsGeneratingStyle(true);
     setBeautifyPrompt('');
     
@@ -112,6 +120,10 @@ Respond ONLY with a valid JSON array of objects.`;
         setBeautifyStyleId(normalizedStyles[0].id);
       }
       setTriggerBeautify(Date.now());
+      
+      try {
+        await deductAiPoint();
+      } catch (e) {}
     } catch (e: any) {
       console.error(e);
       if (e.message === 'Failed to fetch') {
@@ -132,6 +144,10 @@ Respond ONLY with a valid JSON array of objects.`;
 
   const handleTweakSubmit = async () => {
     if (!beautifyPrompt.trim() || generatedStyles.length === 0) return;
+    if (userProfile && userProfile.role === 'user' && userProfile.points <= 0) {
+      toast.error('⚠️ 算力點數不足！請聯繫管理員取得更多點數。', { duration: 4000 });
+      return;
+    }
     setIsGeneratingStyle(true);
 
     const prompt = `You are an expert UI designer. The user wants to adjust the current spreadsheet color themes based on this instruction: "${beautifyPrompt}".
@@ -204,6 +220,10 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
         }
       }
       setBeautifyPrompt('');
+      
+      try {
+        await deductAiPoint();
+      } catch (e) {}
     } catch (e: any) {
       console.error(e);
       if (e.message === 'Failed to fetch') {
@@ -217,6 +237,10 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
   };
 
   const handleAiTextSubmit = async (instruction: string, actionType: 'rewrite' | 'draft' | 'summarize' | 'translate') => {
+    if (userProfile && userProfile.role === 'user' && userProfile.points <= 0) {
+      toast.error('⚠️ 算力點數不足！請聯繫管理員取得更多點數。', { duration: 4000 });
+      return;
+    }
     setIsGeneratingText(true);
     let prompt = '';
     
@@ -252,6 +276,10 @@ Return an updated JSON array of 3 themes that incorporate the user's instruction
         window.dispatchEvent(new CustomEvent('replace-word-text', { detail: generatedText }));
       }
       setAiTextPrompt('');
+      
+      try {
+        await deductAiPoint();
+      } catch (e) {}
     } catch (e: any) {
       console.error(e);
       alert('文字生成失敗！(錯誤: ' + e.message + ')');
