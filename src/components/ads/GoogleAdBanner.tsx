@@ -18,13 +18,17 @@ export const GoogleAdBanner: React.FC<GoogleAdBannerProps> = ({
   const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    try {
-            if (window.adsbygoogle && adRef.current && !adRef.current.dataset.adsbygoogleStatus) {
-                window.adsbygoogle.push({});
+    const timer = setTimeout(() => {
+      try {
+        if (window.adsbygoogle && adRef.current && !adRef.current.dataset.adsbygoogleStatus) {
+          window.adsbygoogle.push({});
+        }
+      } catch (e) {
+        console.error('Google AdSense error', e);
       }
-    } catch (e) {
-      console.error('Google AdSense error', e);
-    }
+    }, 2500); // 延遲 2.5 秒載入廣告腳本
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
