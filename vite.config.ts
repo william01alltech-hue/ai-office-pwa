@@ -78,6 +78,21 @@ export default defineConfig({
           if (id.includes('@google/generative-ai')) {
             return 'gemini-vendor';
           }
+          if (id.includes('pdfjs-dist') || id.includes('pdf-lib') || id.includes('pdf2docx-wasm')) {
+            return 'pdf-vendor';
+          }
+          if (id.includes('xlsx') || id.includes('exceljs') || id.includes('@univerjs')) {
+            return 'excel-vendor';
+          }
+          if (id.includes('@imgly/background-removal')) {
+            return 'imgly-vendor';
+          }
+          if (id.includes('pptxgenjs')) {
+            return 'ppt-vendor';
+          }
+          if (id.includes('jszip') || id.includes('docx') || id.includes('mammoth')) {
+            return 'zip-vendor';
+          }
           if (id.includes('node_modules')) {
             return 'vendor';
           }
